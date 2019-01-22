@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+.vscode
+*.dSYM
+unique1
+unique2
+input-6.txt

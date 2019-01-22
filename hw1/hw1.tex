@@ -1,0 +1,14 @@
+4a) the for loop in unusual puts elements in different halves of the array, otherwise elements in different halves would never be compared.
+Correctness: 
+    Initialization: Cruel does not call Unusual until n=2, when both halves of A are trivially sorted. 
+    
+    Maintenance: Unusual then gradually sorts A as the stack of Cruel unwinds and n grows. The for loop swaps the second quarter of the array with the 
+    third quarter of the array.  The recursive calls to Unusual maintain the invariant that each half is sorted, as the quarters are now 
+    halves for the recursive calls.
+    
+    Termination: As the stack of Cruel unwinds, Unusual gradually sorts A in n_i=2^i chunks, until i=k where n=2^k.  At this point the entire array
+    has been sorted.
+
+4b) The array [3 4 1 2] would not sort correctly if the for loop were removed.  Unusual would return [3 1 4 2]
+
+4c) The array [3 4 1 2] would not sort correctly if the last 2 lines were swapped.  Unusual would return [1 3 2 4]
