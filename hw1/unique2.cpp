@@ -2,6 +2,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <set>
 #include <fstream>
 using namespace std;
 
@@ -50,18 +51,17 @@ const vector<int>* readInput() {
 const pair<int, int>* getLongestSubsequence(const vector<int> *sequence) {
     pair<int, int> *output = new pair<int, int>();
     int size = sequence->size();
-    vector<int> longestSubsequence;
+    set<int> longestSubsequence;
     int startIndex = 0;
     for(int i = 0;  i < size; i++) {
-        vector<int> currentSubsequence;
+        set<int> currentSubsequence;
         for(int j = i; j < size; j++) {
             int item = sequence->at(j);
             bool foundDup = false;
-            for(int subItem: currentSubsequence)
-                if(item == subItem) {
-                    foundDup = true;
-                    break;
-                }
+            if(currentSubsequence.find(item) != currentSubsequence.end()) {
+                foundDup = true;
+                break;
+            }
             if(foundDup) {
                 if(currentSubsequence.size() >= longestSubsequence.size()) {
                     if(currentSubsequence.size() == longestSubsequence.size()) {
@@ -80,7 +80,7 @@ const pair<int, int>* getLongestSubsequence(const vector<int> *sequence) {
                 continue;
             }
             else
-                currentSubsequence.push_back(item);
+                currentSubsequence.insert(item);
         }
         // no duplicates in entire sequence
         if(currentSubsequence.size() > longestSubsequence.size()) {
