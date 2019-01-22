@@ -1,0 +1,131 @@
+% myhandout.sty -- for class notes and handouts (use with article style). This
+% is the official version in Library/texmf/tex/latex
+
+%% Text area (margins)
+%% Margins
+\usepackage{xcolor}
+
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.75in}
+\setlength{\oddsidemargin}{0.25in}
+\setlength{\evensidemargin}{0.25in}	% in case of double-sided handouts
+\setlength{\textwidth}{6.0in}
+
+% for adding comments and highlighting to the text
+\providecommand{\cmtM}[1]{\marginpar{\small\textcolor{red}{\parbox{0.75in}{#1}}}} % in margin
+\providecommand{\HL}[1]{\textbf{\textcolor{red}{#1}}}            % highlight
+\providecommand{\cmt}[1]{\textsf{\textcolor{red}{[#1]}}}         % inline
+
+%% Headings (smaller fonts than article style)
+\def\section{\@startsection {section}{1}{\z@}{
+2ex plus 4ex minus 
+-5ex
+}{
+3pt plus 2pt
+}{\bf}}
+\def\subsection{\@startsection{subsection}{2}{\z@}{-3.25ex plus -1ex minus 
+ -.2ex}{1.5ex plus .2ex}{\bf}}
+\def\subsubsection{\@startsection{subsubsection}{3}{\z@}{-3.25ex plus
+ -1ex minus -.2ex}{1.5ex plus .2ex}{\bf}}
+
+\newcommand{\SEC}[1]{\section*{#1}}
+
+%% Page headings (the Header command needs to appear immediately after
+%%	"\begin{document}" and "\label{last}" needs to precede
+%%	"\end{document}")
+\pagestyle{myheadings}
+\thispagestyle{empty}
+
+\newcommand{\Header}[2]{
+\markright{#1 \hfill #2 \hfill page\hspace{0.5em}}
+\thispagestyle{empty}
+{\sl #1 \hfill #2 \hfill page 1 of \pageref{last}}\par
+}
+
+\newcommand{\HeaderWithCopyright}[2]{
+\renewcommand{\thefootnote}{$\fnsymbol{footnote}$}
+\renewcommand{\footnoterule}{\hrulefill}
+\Header{#1}{#2\protect\footnotetext{\copyright\
+Dr.~Matthias~F.~Stallmann, \number\year:
+All rights reserved.}}
+}
+
+\newcommand{\HeaderWithFixedCopyright}[3]{
+\renewcommand{\thefootnote}{$\fnsymbol{footnote}$}
+\renewcommand{\footnoterule}{\hrulefill}
+\Header{#1}{#2\protect\footnotetext{\copyright\
+Dr.~Matthias~F.~Stallmann #3:
+All rights reserved.}}
+}
+
+\newcommand{\TestHeader}[2]{
+\markright{#1 \hfill #2 \hfill UID: 
+\underline{\hspace{35mm}}
+~page~}
+\thispagestyle{empty}
+{\sl #1 \hfill #2 \hfill UID: \underline{\hspace{35mm}}}
+\par\medskip
+}
+
+%% Current Semester
+\newcommand*{\Semester}{%
+\ifcase\month
+\or Spring \or Spring \or Spring \or Spring \or Spring
+\or Summer \or Summer
+\or Fall \or Fall \or Fall \or Fall \or Fall \fi\space
+\number\year 
+}
+
+%% Copyright
+\newcommand*{\CopyRight}{
+\copyright Matthias F. Stallmann \number\year, all rights reserved.
+}
+
+%% Paragraph indentation and separation
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7ex}
+
+%% Space for header and between header and text
+\setlength{\headheight}{1.75ex}
+\setlength{\headsep}{2ex}
+
+%% Lists (avoid too much separation)
+\setlength{\topsep}{0ex}
+\setlength{\partopsep}{0ex}
+\setlength{\itemsep}{-1ex}
+
+%% Tables (make double rules look like thick lines)
+\setlength{\doublerulesep}{0.3mm}
+
+%% Modified list environments (redefine itemize and create Enumerate)
+
+% first (optional) arg of itemize is item tag
+\renewenvironment{itemize}[1][$\bullet$~]{
+\begin{list}{#1}{
+\setlength{\topsep}{-0.2ex}
+\setlength{\itemsep}{-0.1ex}      % for vertical spacing in lists
+\setlength{\parsep}{0.2ex}
+\setlength{\leftmargin}{1.7em}
+\setlength{\labelwidth}{1.3em}
+}
+}{
+\end{list}
+}
+
+% first (optional) argument of Enumerate is the tag type:
+% must use the form \protect\TYPE{MYCOUNTER}, where TYPE is one of roman,
+% alph, etc.
+% Enumerate environments CANNOT BE NESTED
+\newcounter{MYCOUNTER}
+\newenvironment{Enumerate}[1][\protect\arabic{MYCOUNTER}.~]{
+\begin{list}{#1}{
+\setlength{\topsep}{-0.2ex}
+\setlength{\itemsep}{-0.1ex}      % for vertical spacing in lists
+\setlength{\parsep}{0.2ex}
+\usecounter{MYCOUNTER}
+}
+}{
+\end{list}
+}
+
+% [Last modified: 2018 07 27 at 13:32:09 GMT]

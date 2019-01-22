@@ -1,0 +1,83 @@
+\usepackage{myhandout}
+\usepackage{ifthen}
+
+\newcommand{\HD}[1]{\Header{CSC 505, \Semester}{#1}}
+
+\newcommand{\HDC}[1]{\HeaderWithCopyright{CSC 505, \Semester}{#1}}
+\newcommand{\HDFC}[2]{\HeaderWithFixedCopyright{CSC 505, \Semester}{#1}{#2}}
+
+\newcommand{\HWK}[2]{\HD{Homework \##1}\begin{center}Due: #2\end{center}}
+
+\newcommand{\Withold}[1]{#1}
+\newcommand{\OH}[1]{\ensuremath{{\mathrm O}(#1)}}
+\newcommand{\oh}[1]{\ensuremath{\mathrm o(#1)}}
+\newcommand{\LB}[1]{\ensuremath{\Omega(#1)}}
+\newcommand{\BT}[1]{\ensuremath{\Theta(#1)}}
+\newcommand{\CEIL}[1]{\ensuremath{\lceil #1 \rceil}}
+\newcommand{\FLOOR}[1]{\ensuremath{\lfloor #1 \rfloor}}
+%\newcommand{\COMB}[2]{\ensuremath{\left(\begin{array}{c} #1 \\ #2 \end{array}
+%                       \right)}}
+\newcommand{\COMB}[2]{\ensuremath{C_{#2}^{#1}}}
+\newenvironment{algo}%     for algorithms
+{\begin{minipage}{0.95\textwidth}
+    \vspace*{-2ex}
+    \begin{tabbing}
+      \setcounter{linecnt}{0}
+      xxx \= xxx \= xxx \= xxx \= xxx \= xxx \= xxx \= xxx
+      \= \+ \kill\\}%
+    {\end{tabbing}
+  \end{minipage}
+}
+\newcounter{linecnt}
+\newcommand{\NL}{\addtocounter{linecnt}{1} \< (\thelinecnt) \>}
+
+\newcommand{\FOR}{\mbox{\bf for }}
+\newcommand{\FOREACH}{\mbox{\bf foreach }}
+\newcommand{\TO}{\mbox{\bf to }}
+\newcommand{\DOWNTO}{\mbox{\bf downto }}
+\newcommand{\DO}{\mbox{\bf do }}
+\newcommand{\ENDDO}{\mbox{\bf end do}}
+\newcommand{\IF}{\mbox{\bf if~}}
+\newcommand{\THEN}{\mbox{\bf then~}}
+\newcommand{\ELSE}{\mbox{\bf else~}}
+\newcommand{\ELSEIF}{\mbox{\bf else~if~}}
+\newcommand{\ENDIF}{\mbox{\bf endif}}
+\newcommand{\PROC}{\mbox{\bf procedure~}}
+\newcommand{\FUNCTION}{\mbox{\bf function~}}
+\newcommand{\INPUT}{\mbox{\bf input:~}}
+\newcommand{\OUTPUT}{\mbox{\bf output:~}}
+\newcommand{\IS}{\mbox{\bf is~}}
+\newcommand{\RETURN}{\mbox{\bf return~}}
+\newcommand{\RETURNS}{\mbox{\bf returns~}}
+\newcommand{\MOD}{\mbox{\bf~modifies~}}
+\newcommand{\END}{\mbox{\bf end~}}
+\newcommand{\AND}{\mbox{\bf ~and~}}
+\newcommand{\OR}{\mbox{\bf ~or~}}
+\newcommand{\NOT}{\mbox{\bf not~}}
+\newcommand{\GETS}{\ensuremath{\; \leftarrow \;}}
+\newcommand{\WHILE}{\mbox{\bf while~}}
+\newcommand{\REPEAT}{\mbox{\bf repeat~}}
+\newcommand{\UNTIL}{\mbox{\bf until~}}
+\newcommand{\CMT}{\ensuremath{\triangleright} }
+\newcommand{\TRUE}{\ensuremath{\mathsf{true}}}
+\newcommand{\FALSE}{\ensuremath{\mathsf{false}}}
+\newcommand{\NIL}{\mbox{\textsc{nil}}}
+\newcommand{\VN}[1]{\ensuremath{\mathit{#1}}} % variable names
+\newcommand{\FN}[1]{\mbox{\textsc{#1}}} % function names
+\newcommand{\NULL}{\textbf{\emph{null}}}
+
+\newcommand{\red}{\ensuremath{\leq_P}}
+\newcommand{\NP}{\ensuremath{\mathsf{NP}}}
+\newcommand{\NPC}{\ensuremath{\mathsf{NPC}}}
+\newcommand{\Ptime}{\ensuremath{\mathsf{P}}}
+\newenvironment{prf}[1]{%    for equations with comments on each step
+                        %    (argument gives size of comment box)
+       \[\begin{array}{rclp{#1}}
+}{
+\end{array}\]
+}
+\newcommand{\DS}{\displaystyle} % to make it easier to force ``large''
+                                % summation signs
+
+
+% [Last modified: 2018 04 27 at 13:50:37 GMT]
