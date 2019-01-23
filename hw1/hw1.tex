@@ -65,8 +65,8 @@ c) The Master Theorem does not apply here because $\frac{n^2}{lg(n)} \,\epsilon\
  \hline
 \end{tabular}
 \end{table}\\
-$c_0n^2 + n^2\sum_{i=0}^{k-1}\frac{1}{lgn-i}\,=\,c_0n^2 - n^2\sum_{i=0}^{\floor*{lgn}}\frac{1}{i-lgn} - n^2\sum_{i=\ceil*{lgn}}^{k-1}\frac{1}{i-lgn}\,=\,c_0n^2 - c_1n^2 - c_2n^2$\\\\
-The terms in the second term $n^2\sum_{i=0}^{\floor*{lgn}}$ will converge to 0 after a constant number of terms so it is bounded by the constant $c_1$.  For the third term, since $\frac{1}{i-lgn}$ is monotonically increasing starting from $i=\ceil*{lgn}$ we can take the integral $\int_{\ceil*{lgn}}^{k}\frac{1}{i-lgn}\,=\,ln(lgn-lgn) - ln(\ceil*{lgn}-lgn)$ which is approximately 0.  Therefore $T(n)=\Theta(n^2)$\\\\
+$c_0n^2 + n^2\sum_{i=0}^{k-1}\frac{1}{lgn-i}$\\\\
+The terms in the summation $\sum_{i=0}^{k-1}$ gradually grow to 1 when $i=k-1$. Therefore $T(n)=\Theta(n^2)$\\\\
 d) Case 3 of the Master Theorem applies $\frac{n^\frac{5}{4}}{lg^2n}\,=\,\Omega(n^{log_45+\epsilon})$\\
 $\lim_{n \to \infty}\frac{n^{1.16+\epsilon}}{\frac{n^{1.25}}{lg^2n}}\,=\,\frac{n^{1.16+\epsilon}lg^2n}{n^{1.25}}\,=\,\frac{lg^2n}{n^{.09-\epsilon}}$\\
 $\frac{\frac{d}{dn}lg^2n}{\frac{d}{dn}n^{.09-\epsilon}}\,=\,\frac{2lgn}{n.09n^{-.91-\epsilon}ln2}\,=\,\frac{2lgn}{.09n^{.09-\epsilon}ln2}$\\
@@ -85,11 +85,15 @@ a) Correctness:
     has been sorted.
 \end{itemize}
 b) The array [3 4 1 2] would not sort correctly if the for loop were removed.  Unusual would return [3 1 4 2]\\\\
-c) The array [3 4 1 2] would not sort correctly if the last 2 lines were swapped.  Unusual would return [1 3 2 4]\\\\
+c) The array [3 4 1 2] would not sort correctly if the last 2 lines were swapped.  Unusual would return [1 3 2 4]\\\\\\
 d) $T(n)=3T(\frac{n}{2})+\frac{n}{4}+1$ and $T(2)=3$\\
 $f(n)=\frac{n}{4}+1$ and $n^{log_ba}=n^{lg3}=n^{1.58}$\\
 Case 1 of the Master Theorem applies $\frac{n}{4}\,=\,O(n^{1.58-\epsilon})$\\
 $\lim_{n \to \infty}\frac{4n^{1.58}}{nn^{\epsilon}}\,=\,4n^{.58-\epsilon}\,=\,\infty$ for $\epsilon<.58$\\
 Therefore $T(n)=\Theta(n^{lg3})$\\\\
-e)$T(n)=2T(\frac{n}{2})+\Theta(n^{lg3})$
+e)$T(n)=2T(\frac{n}{2})+\Theta(n^{lg3})$ and $T(1)=1$\\
+$f(n)=n^{lg3}=n^{1.58}$ and $n^{log_ba}=n^{lg2}=n$\\
+Case 3 of the Master Theorem applies $n^{1.58}=\Omega(n^{1+\epsilon})$\\
+$\lim_{n \to \infty}\frac{n^{1.58}}{n^{1+\epsilon}}\,=\,n^{.58-\epsilon}\,=\,\infty$ for $\epsilon<.58$\\
+Therefore $T(n)=\Theta(n^{lg3})$
 \end{document}
