@@ -29,6 +29,8 @@ For any positive constant $c > 0$ there exists a constant $n_0>0$ such that $0 \
 $\lim_{n \to \infty}\frac{(n-1)!}{n!}=\frac{1}{n}=0$\\
 $(n-1)!=o(n!)$\\\\
 For any positive constant $c > 0$ there exists a constant $n_0>0$ such that $0 \leq n! < cn^n$ for all $n \geq n_0$. For $n_0>3$, $n! < cn^n$ with c = 1. For $n_0<3$, a sufficiently large c can satisfy the preceding inequality. Therefore $n!=o(n^n)$\\\\
+\section*{Problem 2}
+$\sum_{i=1}^ni^dlg^mi\leq n^{d+1}lg^mn$
 \section*{Problem 3}
 a) Case 1 of the Master Theorem applies here.  $f(n)=n^2lgn$ and $n^{\log_ba}=n^{4.03}$.  $f(n)=O(n^{4.03-\epsilon})$ for $\epsilon=1$, therefore $T(n)=\Theta(n^{\log_4 17})$\\\\
 b) The Master Theorem does not apply here because $nlg^2(n) \,\epsilon\, o(n^{1 + \epsilon})$\\
@@ -66,7 +68,9 @@ c) The Master Theorem does not apply here because $\frac{n^2}{lg(n)} \,\epsilon\
 \end{tabular}
 \end{table}\\
 $c_0n^2 + n^2\sum_{i=0}^{k-1}\frac{1}{lgn-i}$\\\\
-The terms in the summation $\sum_{i=0}^{k-1}$ gradually grow to 1 when $i=k-1$. Therefore $T(n)=\Theta(n^2)$\\\\
+The terms in the summation are $1+\frac{1}{2}+...+\frac{1}{lgn}$ therefore it can be bounded by the harmonic series which gives $c_0n^2 + n^2\sum_{i=0}^{k-1}\frac{1}{lgn-i}\leq c_0n^2+n^2ln(n)$\\
+Taking the integral gives a tighter bound $\int_{0}^{k-1}\frac{1}{lgn-i}di=ln(lgn)$\\
+Therefore we have $T(n)=\Theta(n^2ln(lgn))$\\\\
 d) Case 3 of the Master Theorem applies $\frac{n^\frac{5}{4}}{lg^2n}\,=\,\Omega(n^{log_45+\epsilon})$\\
 $\lim_{n \to \infty}\frac{n^{1.16+\epsilon}}{\frac{n^{1.25}}{lg^2n}}\,=\,\frac{n^{1.16+\epsilon}lg^2n}{n^{1.25}}\,=\,\frac{lg^2n}{n^{.09-\epsilon}}$\\
 $\frac{\frac{d}{dn}lg^2n}{\frac{d}{dn}n^{.09-\epsilon}}\,=\,\frac{2lgn}{n.09n^{-.91-\epsilon}ln2}\,=\,\frac{2lgn}{.09n^{.09-\epsilon}ln2}$\\
