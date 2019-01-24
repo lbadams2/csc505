@@ -31,16 +31,14 @@ $\lim_{n \to \infty}\frac{(n-1)!}{n!}=\frac{1}{n}=0$\\
 $(n-1)!=o(n!)$\\\\
 For any positive constant $c > 0$ there exists a constant $n_0>0$ such that $0 \leq n! < cn^n$ for all $n \geq n_0$. For $n_0>3$, $n! < cn^n$ with c = 1. For $n_0<3$, a sufficiently large c can satisfy the preceding inequality. Therefore $n!=o(n^n)$\\\\
 \section*{Problem 2}
-$$f(n)=\Theta(n^{d+1}lg^mn)$$
-From page 1151 of the book, for a series $\sum_{i=1}^na_i$ if we let $a_{max}=max_{1\leq i \leq n}a_i$, then $\sum_{i=1}^na_i \leq n \cdot a_{max}$\\\\
-Proof by induction:\\
-$\sum_{i=1}^ni^dlg^mi\leq cn^{d+1}lg^mn$. For the initial condition $n=1$ we have $lg^m1 \leq clg^m1$ as long as $c \geq 1$\\
-\begin{equation}
-\begin{split}
-\sum_{i=1}^{n+1}i^dlg^mi\,=\,\sum_{i=1}^ni^dlg^mi + (n+1)^dlg^m(n+1)\\
-\leq cn^{d+1}lg^mn + (n+1)^dlg^m(n+1)
-\end{split}
-\end{equation}
+From page 1151 of the book, for a series $\sum_{i=1}^na_i$ if we let $a_{max}=max_{1\leq i \leq n}a_i$, then $\sum_{i=1}^na_i \leq n \cdot a_{max}$\\
+So we have $f(n)=O(n^{d+1}lg^mn)$ for $c\geq 1$ and $n_0=1$, and $d > 0, m\geq 1$\\\\
+To find the lower bound we have $\sum_{i=1}^ni^dlg^mi \geq \sum_{i=\frac{n}{2}}^n\frac{n}{2}^dlg^m\frac{n}{2}\,=\,\frac{n}{2}^{d+1}lg^m\frac{n}{2}\,=\,\frac{n}{2}^{d+1}(lgn-1)^m$\\
+Now we have $(\frac{1}{2})^{d+1}n^{d+1}(lgn-1)^m \geq \frac{1}{2}^{d+1}n^{d+1}(\frac{lgn}{2})^m\,=\,(\frac{1}{2})^{d+m+1}n^{d+1}lg^mn$ for $n_0\geq 8$\\
+So we have $f(n)=\Omega(n^{d+1}lg^mn)$ for $d > 0, m\geq 1, c\leq 4, n_0 \geq 8$\\\\
+We have $c\leq 4$ because the biggest possible value for $(\frac{1}{2})^{d+m+1}$ is $\frac{1}{4}$\\
+We have $n_0 \geq 8$ because $(lgn-1)^m\geq (\frac{lgn}{2})^m$ for $n_0 \geq 8$\\\\
+Because we have big-O and $\Omega$, $f(n)=\Theta(n^{d+1}lg^mn)$
 \section*{Problem 3}
 a) Case 1 of the Master Theorem applies here.  $f(n)=n^2lgn$ and $n^{\log_ba}=n^{4.03}$.  $f(n)=O(n^{4.03-\epsilon})$ for $\epsilon=1$, therefore $T(n)=\Theta(n^{\log_4 17})$\\\\
 b) The Master Theorem does not apply here because $nlg^2(n) \,\epsilon\, o(n^{1 + \epsilon})$\\
