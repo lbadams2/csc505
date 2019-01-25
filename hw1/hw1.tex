@@ -19,17 +19,15 @@
 \maketitle
 
 \section*{Problem 1}
-The sorted order where $g_i\epsilon o(g_{i+1})$ or $g_i \epsilon\Theta(g_{i+1})$ is $$n^{.0001}, lg^2n, n^2, n^{lgn}, 2^n, (n-1)!, n!, n^n$$ I will prove each relationship from left to right. The transitivity of little-o and big-theta allow me to only prove the adjacent relationships.\\\\
-$\lim_{n \to \infty}\frac{n^\frac{1}{10000}}{lg^2n} = \frac{1}{n^{10000}lg^2n} = 0$\\
-$n^{.0001}=o(lg^2n)$\\\\
-$\lim_{n \to \infty}\frac{lg^2n}{n^2}=\frac{\frac{d}{dn}(lgn\times lgn)}{\frac{d}{dn}n^2}=\frac{2lgn}{n^3ln2}=0$\\
-$lg^2n=o(n^2)$\\\\
-For any positive constant $c > 0$, there exists a constant $n_0>0$ such that $0 \leq n^2 < cn^{lgn}$ for all $n \geq n_0$. For $n_0>4$, $n^2 < cn^{lgn}$ with c = 1. For $n_0<4$, a sufficiently large c can satisfy the preceding inequality. Therefore $n^2=o(n^{lgn})$\\\\
-For any positive constant $c > 0$ there exists a constant $n_0>0$ such that $0 \leq n^{lgn} < c2^n$ for all $n \geq n_0$. $\lim_{n \to \infty}\frac{lgn}{n}=\frac{\frac{d}{dn}(lgn)}{\frac{d}{dn}n}=\frac{1}{nln2}=0$. Because $lgn=o(n)$, $n^{lgn}=o(2^n)$\\\\
-For any positive constant $c > 0$ there exists a constant $n_0>0$ such that $0 \leq 2^{n} < c(n-1)!$ for all $n \geq n_0$. For $n_0>4$, $2^n < c(n-1)!$ with c = 1. For $n_0<4$, a sufficiently large c can satisfy the preceding inequality. Therefore $2^{n}=o((n-1)!)$\\\\
-$\lim_{n \to \infty}\frac{(n-1)!}{n!}=\frac{1}{n}=0$\\
-$(n-1)!=o(n!)$\\\\
-For any positive constant $c > 0$ there exists a constant $n_0>0$ such that $0 \leq n! < cn^n$ for all $n \geq n_0$. For $n_0>3$, $n! < cn^n$ with c = 1. For $n_0<3$, a sufficiently large c can satisfy the preceding inequality. Therefore $n!=o(n^n)$\\\\
+The sorted order where $g_i\epsilon o(g_{i+1})$ or $g_i \epsilon\Theta(g_{i+1})$ is $$lg^2n, n^{.0001}, n^2, n^{lgn}, 2^n, (n-1)!, n!, n^n$$ I will prove each relationship from left to right. The transitivity of little-o and big-theta allow me to only prove the adjacent relationships.\\\\
+$\lim_{n \to \infty}\frac{\frac{d}{dn}n^.0001}{\frac{d}{dn}lg^2n} = \frac{.0001n^{.0001}ln2}{2lgn}$ and $\frac{\frac{d}{dn}.0001n^{.0001}ln2}{\frac{d}{dn}2lgn} = \frac{.0001^2n^{.0001}ln^22}{2} = \infty$\\
+Therefore $lg^2n=o(n^{.0001})$\\\\
+$\lim_{n \to \infty}\frac{lg^2n}{n^2}=\frac{\frac{d}{dn}(lgn\times lgn)}{\frac{d}{dn}n^2}=\frac{lgn}{n^2ln2}$ and $\frac{\frac{d}{dn}lgn}{\frac{d}{dn}n^2ln2}=\frac{1}{n^2ln^22}= 0$, therefore $lg^2n=o(n^2)$\\\\
+$\lim_{n \to \infty}\frac{n^2}{n^lgn} = 0$ for $n>4$, therefore $n^2=o(n^{lgn})$\\\\
+$\lim_{n \to \infty}\frac{n^{lgn}}{2^n} = 0$ for all $n>0$, the power of the denominator is polynomially greater than the power of the numerator, so $n^{lgn}=o(2^n)$\\\\
+For any positive constant $c > 0$ there exists a constant $n_0>0$ such that $0 \leq 2^{n} < c(n-1)!$ for all $n \geq n_0$. For $n_0>4$, $2^n < c(n-1)!$ with c = 1. For $n_0<4$, a sufficiently large c can satisfy the preceding inequality. For $n=1$ we have $c>2$, for $n=2$ we have $c>4$, for $n=3$ we have $c>4$, for $n=4$ we have $c>\frac{8}{3}$. Therefore $2^{n}=o((n-1)!)$\\\\
+$\lim_{n \to \infty}\frac{(n-1)!}{n!}=\frac{1}{n}=0$, therefore $(n-1)!=o(n!)$\\\\
+For any positive constant $c > 0$ there exists a constant $n_0>0$ such that $0 \leq n! < cn^n$ for all $n \geq n_0$. For $n_0>1$, $n! < cn^n$ with c = 1. For $n_0\leq 1$, a sufficiently large c can satisfy the preceding inequality. For $n=0$ we have $c>1$, for $n=1$ we have $c>1$. Therefore $n!=o(n^n)$\\\\
 \section*{Problem 2}
 From page 1151 of the book, for a series $\sum_{i=1}^na_i$ if we let $a_{max}=max_{1\leq i \leq n}a_i$, then $\sum_{i=1}^na_i \leq n \cdot a_{max}$\\
 So we have $f(n)=O(n^{d+1}lg^mn)$ for $c\geq 1$ and $n_0=1$, and $d > 0, m\geq 1$\\\\
@@ -38,7 +36,7 @@ Now we have $(\frac{1}{2})^{d+1}n^{d+1}(lgn-1)^m \geq \frac{1}{2}^{d+1}n^{d+1}(\
 So we have $f(n)=\Omega(n^{d+1}lg^mn)$ for $d > 0, m\geq 1, c\leq 4, n_0 \geq 8$\\\\
 We have $c\leq 4$ because the biggest possible value for $(\frac{1}{2})^{d+m+1}$ is $\frac{1}{4}$\\
 We have $n_0 \geq 8$ because $(lgn-1)^m\geq (\frac{lgn}{2})^m$ for $n_0 \geq 8$\\\\
-Because we have big-O and $\Omega$, $f(n)=\Theta(n^{d+1}lg^mn)$
+Because we have big-O and $\Omega$, $f(n)=\Theta(n^{d+1}lg^mn)$\\
 \section*{Problem 3}
 a) Case 1 of the Master Theorem applies here.  $f(n)=n^2lgn$ and $n^{\log_ba}=n^{4.03}$.  $f(n)=O(n^{4.03-\epsilon})$ for $\epsilon=1$, therefore $T(n)=\Theta(n^{\log_4 17})$\\\\
 b) The Master Theorem does not apply here because $nlg^2(n) \,\epsilon\, o(n^{1 + \epsilon})$\\
@@ -85,17 +83,12 @@ $\frac{\frac{d}{dn}lg^2n}{\frac{d}{dn}n^{.09-\epsilon}}\,=\,\frac{2lgn}{n.09n^{-
 $\frac{\frac{d}{dn}2lgn}{\frac{d}{dn}.09n^{.09-\epsilon}ln2}\,=\,\frac{2}{.09^2n^{.09-\epsilon}2ln2}$\\
 $\lim_{n \to \infty}\frac{2}{.09^2n^{.09-\epsilon}2ln2}=0$ for $\epsilon<.09$, therefore $\frac{n^\frac{5}{4}}{lg^2n}\,=\,\omega(n^{log_45+\epsilon})$ and $T(n)=\Theta(\frac{n^\frac{5}{4}}{lg^2n})$\\
 \section*{Problem 4}
-a) Correctness: 
-\begin{itemize}
-    \item Initialization: Cruel does not call Unusual until n=2, when both halves of A are trivially sorted. 
-    
-    \item Maintenance: Unusual then gradually sorts A as the stack of Cruel unwinds and n grows. The for loop swaps the second quarter of the array with the 
-    third quarter of the array.  The recursive calls to Unusual maintain the invariant that each half is sorted, as the quarters are now 
-    halves for the recursive calls.
-    
-    \item Termination: As the stack of Cruel unwinds, Unusual gradually sorts A in $n_i=2^i$ chunks, until i=k where $n=2^k$.  At this point the entire array
-    has been sorted.
-\end{itemize}
+a) The induction hypothesis for UNUSUAL is that if each half of the array is sorted when UNUSUAL is called, the entire array will be sorted when it returns.\\\\
+In the base case where $n=2$, each half of the array is sorted trivially and the elements will be swapped if they are out of order.\\\\
+For $n>2$, the for loop swaps the second quarter of the array with the third quarter of the array. This is done in order to sort the entire array, as the halves may not be sorted relative to one another. This swap can potentially make the halves unsorted, so recursive calls are made on each half.  After each half is sorted again, another recursive call is made on the portion consisting of the quarters that have just been swapped, as they have not been sorted relative to one another. The recursive calls maintain the invariant that each half is sorted, as the quarters are already sorted and are now halves for the recursive calls.  Since every call maintains the invariant, when UNUSUAL returns, the array is sorted.\\\\
+The induction hypothesis for CRUEL is that the array will be sorted when it returns.\\\\
+In the base case where $n=1$ the array is sorted trivially.\\\\
+For $n \geq 2$, CRUEL calls UNUSUAL on the entire array, each half is sorted so UNUSUAL returns a sorted array.  It then unwinds to $n=4$, where before calling UNUSUAL on the entire array, CRUEL calls itself recursively on each half of the array. This ensures each half will be sorted when it calls UNUSUAL, therefore UNUSUAL returns a sorted array.  This repeats as the stack unwinds further, at which point the original array is sorted.\\\\
 b) The array [3 4 1 2] would not sort correctly if the for loop were removed.  Cruel would return [3 1 4 2]\\\\
 c) The array [3 4 1 2] would not sort correctly if the last 2 lines were swapped.  Cruel would return [1 3 2 4]\\\\\\
 d) $T(n)=3T(\frac{n}{2})+\frac{n}{4}+1$ and $T(2)=3$\\
