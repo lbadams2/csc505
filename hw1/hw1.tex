@@ -4,6 +4,16 @@
 \usepackage{myhandout}
 \usepackage{mathtools}
 \usepackage{amsmath}
+\usepackage{afterpage}
+\usepackage{titlesec}
+
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
+\newcommand{\sectionbreak}{\clearpage}
+    
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 \makeatletter% Set distance from top of page to first float
@@ -101,4 +111,8 @@ $f(n)=n^{lg3}=n^{1.58}$ and $n^{log_ba}=n^{lg2}=n$\\
 Case 3 of the Master Theorem applies $n^{1.58}=\Omega(n^{1+\epsilon})$\\
 $\lim_{n \to \infty}\frac{n^{1.58}}{n^{1+\epsilon}}\,=\,n^{.58-\epsilon}\,=\,\infty$ for $\epsilon<.58$\\
 Therefore $T(n)=\Theta(n^{lg3})$
+\afterpage{\blankpage}
+\afterpage{\blankpage}
+\afterpage{\blankpage}
+\afterpage{\blankpage}
 \end{document}
