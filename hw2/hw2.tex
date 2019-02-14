@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{csc505}
+\usepackage{myhandout}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+
+\title{CSC505 HW2}
+\author{Liam Adams}
+\date{February 24 2019}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 1}
+a) The heapsort algorithm from the book is \\\\
+HeapSort(A)\\
+\-\hspace{1cm}Build-Max-Heap(A)\\
+\-\hspace{1cm}for i = A.length downto 2\\
+\-\hspace{2cm}exchange A[1] with A[i]\\
+\-\hspace{2cm}A.heap-size = A.heap-size-1\\
+\-\hspace{2cm}Max-Heapify(A, 1)\\\\
+Build-Max-Heap runs in linear time and is responsible for the first n term in $O(n + klgn)$.\\ Now for the for loop - the worst case runtime for Max-Heapify is $lgn$, when the array is not a heap and it has to traverse every level of the tree to make it a heap.  This worst case scenario can only occur k times with this input however.  Each call to Max-Heapify will place a 1 at the root of the heap, which is then removed before the next call to Max-Heapify.  After the for loop runs k times, all of the 1's will have been removed from the heap and all the remaining elements will all be 0's, forming a heap.  Max-Heapify will take constant time when every element of the array is equal.  Therefore the worst case runtime is $O(n + klgn)$\\\\
+b) To prove $\Omega(n + klgn)$, it is given that Build-Max-Heap takes linear time so the first term is accounted for. Now there must be a way to arrange an array for every input size so that while there is still a 1 left in the heap, Max-Heapify must traverse the height of the tree to make it a heap.\\\\
+c) Excluding the Build-Max-Heap operation as the problem states, when the for loop begins with the heap array [1, 1, 0, 1, 0] it performs 6 comparisons.  When the heap array is rearranged to [1, 1, 0, 0, 1] it only performs 5 comparisons.\\\\
+In the below figure the first run through the for loop takes 3 comparisons because [0,5] must be moved all the way down and compared to [1,4] at the third level.
+\begin{figure}
+\centering
+\includegraphics[width=50mm]{images/6-comp-heap.png}
+\caption{[1, 1, 0, 1, 0] \label{overflow}}
+\end{figure}\\\\
+In the above figure the first run through the loop only takes 2 comparisons because it is still a valid heap after swapping [1,4] to the root.  After the first run through the loop the heaps in both cases are identical so the same number of comparisons are made.
+\begin{figure}
+\centering
+\includegraphics[width=50mm]{images/5-comp-heap.png}
+\caption{[1, 1, 0, 0, 1] \label{overflow}}
+\end{figure}
+
+\end{document}
