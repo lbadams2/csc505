@@ -25,7 +25,7 @@ struct Node {
 };
 
 vector<Node> heap;
-int heapSize = 0;
+//int heapSize = 0;
 int lgBranches = 0;
 int branches = 0;
 int heapComparisons = 0;
@@ -38,7 +38,7 @@ void minHeapify(int i) {
     int lastChild = firstChild + (branches - 1);
     
     for(int j = firstChild; j <= lastChild; j++)
-        if(j < heapSize) {
+        if(j < heap.size()) {
             heapComparisons++;
             if(heap[j] < heap[smallest])
                 smallest = j;
@@ -52,42 +52,42 @@ void minHeapify(int i) {
 }
 
 void insertValue(Node &node) {
-    heap.insert(heap.begin() + heapSize++, node);
-    int startIndex = heapSize >> 1; // divide by 2, floor division
+    //heap.insert(heap.begin() + heapSize++, node);
+    heap.push_back(node);
+    int startIndex = heap.size() >> 1; // divide by 2, floor division
     for(int i = startIndex; i >= 0; i--)
         minHeapify(i);    
 }
 
 Node removeMin() {
     Node min = heap[0];
-    int lastIndex = heapSize - 1;
+    //int lastIndex = heapSize - 1;
+    int lastIndex = heap.size() - 1;
     iter_swap(heap.begin(), heap.begin() + lastIndex);
-    heapSize--;
+    heap.pop_back();
+    //heapSize--;
     minHeapify(0);
     return min;
 }
 
 void readInput() {
-    for(string line; getline(cin, line);) {
-        if(line == "-1") {
+    int key = 0, tmp = 0;
+    bool gotKey = false;
+    while(scanf("%d", &tmp) != -1) {
+        if(!gotKey && tmp == -1) {
             Node min = removeMin();
             cout << min.key << " " << min.val << '\n';
-        }
-        else {
-            stringstream ss(line);
-            string item;
-            int i = 0;
+        } else if(!gotKey && tmp != -1) {
+            key = tmp;
+            gotKey = true;
+        } else if(gotKey) {
             Node node;
-            while(getline(ss, item, ' ')) {                
-                if (i == 0) {
-                    node.key = stoi(item);
-                    i++;
-                }
-                else {
-                    node.val = stoi(item);
-                    insertValue(node);
-                }
-            }
+            node.key = key;
+            node.val = tmp;
+            insertValue(node);
+            gotKey = false;
+        } else {
+            throw invalid_argument("error reading file");
         }
     }
 }
