@@ -1,0 +1,13 @@
+# x is sorted in increasing order
+find-towers(x, d)
+    n = x.length
+    let y be a new array
+    y[1] = x[1] + d
+    num_towers = 1
+    closest_tower = y[1]
+    for i = 2 to n
+        if |x[i] - closest_tower| > d
+            num_towers = num_towers + 1
+            y[num_towers] = x[i] + d
+            closest_tower = y[num_towers]
+    return y
