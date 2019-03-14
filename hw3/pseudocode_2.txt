@@ -1,4 +1,4 @@
-is-shuffle(X, Y, Z)
+dp-shuffle(X, Y, Z)
     m = X.length
     n = Y.length
     let c[0..m, 0..n] be a new table
@@ -12,12 +12,12 @@ is-shuffle(X, Y, Z)
         for j to n-1
             k = i + j
             if x[i] == z[k]
-                c[i, j] = c[i-1, j]
+                #c[i, j] = c[i-1, j]
+                c[i, j] = true
             else if y[j] == z[k]
-                c[i, j] = c[i, j-1]
+                #c[i, j] = c[i, j-1]
+                c[i, j] = true
             else if x[i] != z[k] and y[j] != z[k]
                 c[i, j] = false
-                return c[i, j]
     
-    return c[i, j]
-
+    return c

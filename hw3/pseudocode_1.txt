@@ -70,5 +70,26 @@ recursive-max-job-profit(p, t, d, current_time)
     return q
 
 
+dp-max-profit(p, t, d)
+    n = p.length
+    D = 0
+    for i = 1 to n
+        D = D + t[i]
+    for i = 1 to n
+        if d[i] > D
+            d[i] = D
 
+    let m[0...n,0...D] be a new table
+    for i = 0 to n
+        m[i, 0] = 0
+    for j = 0 to D
+        m[0, j] = 0
+
+    for i = 1 to n
+        for j = 1 to D
+            if j >= t_i
+                q = m[i-1, j-t_i] + p_i
+                if q > m[i, j]
+                    m[i, j] = q
     
+    return m

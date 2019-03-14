@@ -46,7 +46,7 @@ long calculateCost(int* dims, int start, int end) {
 int main(int argc, char** argv) {
     int* dims = readInput();
     long cost = calculateCost(dims, 0, numVals - 1);
-    delete dims;
+    //delete dims;
     cout << cost << '\n';
     return 0;
 }

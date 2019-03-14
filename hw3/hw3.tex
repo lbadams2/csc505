@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+
+\title{CSC505 HW3}
+\author{Liam Adams}
+\date{March 17 2019}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 1}
+a) Let $M(k,d)$ be the max profit for the first $k$ jobs if they have to finish at or before time $d$.
+\[
+    M(k,d)= 
+\begin{cases}
+    0,& \text{if } k<d \text{ or } k=0 \text{ or } d=0\\
+    \max_{1\leq i \leq k}\{M(k-1, d-t_i)\}, & \text{if } d\geq t_i
+\end{cases}
+\]\\
+b) The algorithm to fill the table is the following
+\begin{enumerate}
+  \item Sort the arrays so the $d$ array is in increasing order.
+  \item Sum all the times in the $t$ array to find D, the longest time it would take for all jobs to complete serially
+  \item Change any time in the $d$ array greater than D to D
+  \item Create a new table $m$ with $n+1$ rows and D+1 columns, with $n=\text{number of jobs}$ and initialize every cell to 0
+  \item Then iterate over every cell in the table, if the time for the $i^{th}$ job $t_i$ is less than the deadline time $d_j$ represented by the column, then set the value of that cell to the max between the current value and $m[i-1, j-t_i] + p_i$
+\end{enumerate}
+c) $t=[2, 4, 3]$, $d=[4, 6, 10]$, $p=[6, 3, 2]$. Create a $4x10$ table and change $d_2$ to 9.\\\\
+For row 0 we have $\{0,0,0,0,0,0,0,0,0,0\}$\\
+For row 1 we have $\{0,0,6,6,6,6,6,6,6,6\}$\\
+For row 2 we have $\{0,0,0,0,3,3,9,9,9,9\}$\\
+For row 3 we have $\{0,0,0,2,2,2,2,5,5,11\}$\\\\
+The answer will be the bottom right entry of the table\\\\
+d) The algorithm must iterate over $nxD$ cells. Prior to that it must iterate over the $t$ array of length $n$ to sum the times and over the $d$ array of length $n$ to adjust the deadline times.  However the runtime is dominated by filling out the table which is $O(nxD)$.  We can write D in terms of $n$ if we assume all the times in $t$ are in the range [1,n]. In this case the sum D is an arithmetic series bounded by $n^2$.  Therefore the runtime of the algorithm is $O(n^3)$
+\section*{Problem 2}
+a) Let $s(m,n)$ be a function that returns true or false depending on whether $Z_{m+n}$ is a shuffle of $X = x_1 ... x_m$ and $Y = y_1 ... y_n$.  Let $k=m+n$
+\[
+    s(i,j)= 
+\begin{cases}
+    false,& \text{if } x_i\neq z_k \text{ and } y_j\neq z_k \text{ and } m\neq n\neq 0\\
+    true,& \text{if } i=j=0\\
+    s[i-1, j],& \text{if } x_i=z_k\\
+    s[i, j-1],& \text{if } y_j=z_k
+\end{cases}
+\]\\
+b) The algorithm to fill the table is the following
+\begin{enumerate}
+  \item Create a new table $s$ with $m+1$ rows and $n+1$ columns, with $m=\text{size of X}$ and $n=\text{size of Y}$ and initialize every cell to false, except s[0,0] which will be true.
+  \item Let $i$ go from 0..m, $j$ go from 0..n, and $k$ go from 0..m+n. Also let the 0th index be the character before the start of each string, so the first characters of each string are at x[1], y[1], and z[1]. Let k=i+j and s[0,0]=true. Iterate over i and j, if $x[i]=z[k]$ or $y[j]=z[k]$ then set $c[i,j]=true$. Otherwise set $c[i,j]=false$.
+\end{enumerate}
+c) With X = my, Y = dog and Z = domyg. We have m=2 and n=3.  Our table will be 3x4.\\
+Row 0 will be \{true, true, true, false\}\\
+Row 1 will be \{false, false, true, true\}\\
+Row 2 will be \{false, false, true, true\}\\\\
+The answer will be the bottom right entry of the table\\\\
+d) Filling the table is the dominant term in the runtime of the algorithm.  There are (m+1)x(n+1) cells, so the runtime is $O(mn)$.\\
+\section*{Problem 3}
+a) y(k,d) returns the location of the cell tower closest to the $k^{th}$ house.  The houses are all on a line, and the $x$ array stores their positions sorted in increasing distance from the origin of the line.
+\[
+    y(k,d)= 
+\begin{cases}
+    d,& \text{if } k=0\\
+    y(k-1,d),& \text{if } x_i-y(k-1,d)\leq d\\
+    x[k]+d,& \text{if } x_i-y(k-1,d)> d\\
+\end{cases}
+\]\\
+b) The greedy choice is always placing the cell tower $d$ distance away from a house that does not have a cell tower close enough to it.  This is the locally optimum solution for that particular house.
+\end{document}
