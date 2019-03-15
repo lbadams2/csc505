@@ -2,14 +2,17 @@
 
 using namespace std;
 
-int numMatrices = 0;
+long numMatrices = 0;
 
 long calculateCost() {
-    int tmp = 0;
-    int buf[3];
+    long tmp = 0;
+    long buf[3];
+    for(int i = 0; i < 3; i++)
+        buf[i] = 0;
+
     long cost = 0;
     bool firstNum = true;
-    while(scanf("%d", &tmp) != -1) {
+    while(scanf("%ld", &tmp) != -1) {
         if(firstNum) {
             numMatrices = tmp;
             firstNum = false;

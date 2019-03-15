@@ -2,51 +2,53 @@
 
 using namespace std;
 
-int numVals = 0;
+long numVals = 0;
 
-int* readInput() {
-    int* dims;
-    int tmp = 0;
+long* readInput() {
+    long* dims;
+    long tmp;
+    int i = 0;
     bool firstNum = true;
-    while(scanf("%d", &tmp) != -1) {
+    while(scanf("%ld", &tmp) != -1) {
         if(firstNum) {
             numVals = tmp + 1;
-            dims = new int(numVals);
+            dims = new long[numVals];
             firstNum = false;
             continue;
         }
-        *dims = tmp;
-        dims++;
+        dims[i++] = tmp;
     }
     return dims;
 }
 
-long calculateCost(int* dims, int start, int end) {
+long calculateCost(long* dims, long start, long end) {
     if(end - start <= 1)
         return 0;
     long cost = 0;
-    int minIndex = 0, minVal = -1;
+    long minIndex = 0;
+    long minVal = -1;
     if(end - start > 2) {
-        for(int i = start + 1; i < end - 1; i++) {
-            int tmp = dims[i];
+        for(long i = start + 1; i < end; i++) {
+            long tmp = dims[i];
             if(minVal == -1 || tmp < minVal) {
                 minVal = tmp;
                 minIndex = i;
             }
         }
+        
     } else {
         minIndex = start + 1;
     }
     cost = dims[start] * dims[minIndex] * dims[end];
-    cost = cost + calculateCost(dims, start, minIndex) + calculateCost(dims, minIndex + 1, end);
+    cost = cost + calculateCost(dims, start, minIndex) + calculateCost(dims, minIndex, end);
     return cost;
 }
 
 
 int main(int argc, char** argv) {
-    int* dims = readInput();
+    long* dims = readInput();
     long cost = calculateCost(dims, 0, numVals - 1);
-    //delete dims;
+    delete dims;
     cout << cost << '\n';
     return 0;
 }

@@ -61,10 +61,19 @@ a) y(k,d) returns the location of the cell tower closest to the $k^{th}$ house. 
 \[
     y(k,d)= 
 \begin{cases}
-    d,& \text{if } k=0\\
     y(k-1,d),& \text{if } x_i-y(k-1,d)\leq d\\
-    x[k]+d,& \text{if } x_i-y(k-1,d)> d\\
+    x[k]+d,& \text{if } x_i-y(k-1,d)> d \text{ or } k=0\\
 \end{cases}
 \]\\
-b) The greedy choice is always placing the cell tower $d$ distance away from a house that does not have a cell tower close enough to it.  This is the locally optimum solution for that particular house.
+b) The greedy choice is always placing the cell tower $d$ distance away from a house that does not have a cell tower close enough to it.  This is the locally optimum solution for that particular house.\\
+To prove the greedy choice, consider any non empty subproblem $S_k$ and let $x_m$ be a house without a cell tower within $d$ units of it.  Then $y_m = x_m + d$ will be included in some minimum sized subset of cell towers such that each house has a tower within $d$ units of it.\\
+Let $Y_k$ be a minimum sized subset of cell towers in $S_k$, and let $y_j$ be the cell tower closest to $x_m$.  If $y_j=y_m$ then we have proven the greedy choice.  If $y_j\neq y_m$, let the set $Y'_k = Y_k - \{y_j\} \cup \{y_m\}$ be $Y_k$ but substituting $y_m$ for $y_j$. All the houses in $Y'_k$ have a cell tower at most $d$ units away, which follows from $Y_k$ satisfying that and $x_m + d = y_m$.  Therefore $y_j \leq y_m$ and since $|Y'_k|=|Y_k|$ we can conclude that $Y'_k$ is a minimum sized subset of cell towers, and it includes $y_m$\\\\
+c) A greedy algorithm is described below
+\begin{enumerate}
+  \item Let $n=x.length$, $y$ be a new array of size $n-1$, and $num\_towers = 1$.  Set $y[1] = x[1] + d$ and $closest\_tower = y[1]$.  This is the initial greedy choice.
+  \item For $i = 2...n$, if $x[i] - closest\_tower > d$ then create a new tower $y[num\_towers++] = x[i] + d$. Also set $closest\_tower$ to the tower just created. This loop is making the greedy choice whenever we encounter a house that does not have a cell tower close enough to it.
+  \item When the for loop completes $y$ will contain a minimum set of cell towers.
+\end{enumerate}
+d) Let $x = [0, 10, 15, 26]$ and $d=5$.  First set $y[1] = 5$, this will satisfy the constraint until $x[3]$ at which point we set $y[2] = 20$.  This will not be close enough to $x[4]$ so we create one more $y[3] = 31$.  So a minimum set of cell towers is $y = [5, 20, 31]$.\\\\
+e) There is only one loop in the algorithm which goes from 2...n.  Therefore the runtime is $O(n)$
 \end{document}
