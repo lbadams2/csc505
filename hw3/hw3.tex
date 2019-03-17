@@ -1,6 +1,8 @@
 \documentclass{article}
 \usepackage{amsmath}
 \usepackage[utf8]{inputenc}
+\usepackage{titlesec}
+\newcommand{\sectionbreak}{\clearpage}
 
 \title{CSC505 HW3}
 \author{Liam Adams}
@@ -11,28 +13,33 @@
 \maketitle
 
 \section*{Problem 1}
-a) Let $M(k,d)$ be the max profit for the first $k$ jobs if they have to finish at or before time $d$.
+a) Let $M(k,d)$ be the max profit for the first $k$ jobs if they have to finish at or before time $d$.  And let the jobs be sorted in order of increasing deadline.
 \[
     M(k,d)= 
 \begin{cases}
-    0,& \text{if } k<d \text{ or } k=0 \text{ or } d=0\\
-    \max_{1\leq i \leq k}\{M(k-1, d-t_i)\}, & \text{if } d\geq t_i
+    0,& \text{if } k>d \text{ or } k=0 \text{ or } d=0\\
+    max_{1\leq i \leq k}\{M(k, d-1), p_i\}, & \text{if } d_i\leq d \text{ and } k=1\\
+    max\{M(k-1, d-t_k) + p_k, M(k-1, d)\}, & \text{if } d_k\leq d \text{ and } k > 1\\
+    M(k, d-1), & otherwise
 \end{cases}
 \]\\
 b) The algorithm to fill the table is the following
 \begin{enumerate}
+  \item The input is the number of jobs $k$ and the time they need to finish by $d$.
   \item Sort the arrays so the $d$ array is in increasing order.
   \item Sum all the times in the $t$ array to find D, the longest time it would take for all jobs to complete serially
   \item Change any time in the $d$ array greater than D to D
-  \item Create a new table $m$ with $n+1$ rows and D+1 columns, with $n=\text{number of jobs}$ and initialize every cell to 0
-  \item Then iterate over every cell in the table, if the time for the $i^{th}$ job $t_i$ is less than the deadline time $d_j$ represented by the column, then set the value of that cell to the max between the current value and $m[i-1, j-t_i] + p_i$
+  \item Create a new table $m$ with $n$ rows and D columns, with $n=\text{number of jobs}$ and initialize every cell to 0.  $m$ will store the max profit values.  Also create a table $s$ with $n$ rows and $D$ columns to store a solution for the job sequence.
+  \item Initialize the first row with the max profit possible for one job at each deadline.
+  \item Then beginning from the second row, iterate over every cell in the $m$ table, if the deadline for the $i^{th}$ job $d_i$ is less than the deadline time $d_j$ represented by the column, then set the value of $m[i,j]$ to the max between $m[i-1, j-t_i] + p_i$ and $m[i-1, j]$.  If the deadline for the $i^{th}$ job is greater than $d_j$ then set $m[i,j]=m[i, j-1]$. If you set $m[i,j]=m[i-1, j-t_i] + p_i$ then set $s[i,j]=i$ 
+  \item return $m[k, d]$ and $s$
+  \item To recover the solution from $s$, use another algorithm called $Print-Jobs(s, n, D)$.  It will originally be called with the full dimensions and print $s[n, D]$, the index of the job.  After printing it recursively calls itself with $s[n-1, D-1]$, if that value of $s$ is the same as the previous value it calls itself with $s[n, D-1]$ until a value changes, and it prints that value.  This process repeats until $n==0$ or $D==0$.
 \end{enumerate}
-c) $t=[2, 4, 3]$, $d=[4, 6, 10]$, $p=[6, 3, 2]$. Create a $4x10$ table and change $d_2$ to 9.\\\\
-For row 0 we have $\{0,0,0,0,0,0,0,0,0,0\}$\\
-For row 1 we have $\{0,0,6,6,6,6,6,6,6,6\}$\\
-For row 2 we have $\{0,0,0,0,3,3,9,9,9,9\}$\\
-For row 3 we have $\{0,0,0,2,2,2,2,5,5,11\}$\\\\
-The answer will be the bottom right entry of the table\\\\
+c) $t=[2, 4, 3]$, $d=[4, 6, 10]$, $p=[3, 4, 2]$. Create a $4x10$ table and change $d_2$ to 9.\\\\\\
+For row 1 we have $\{0,3,3,4,4,4,4,4,4\}$\\
+For row 2 we have $\{0,3,3,4,4,7,7,7,7\}$\\
+For row 3 we have $\{0,3,3,4,5,7,7,7,9\}$\\\\
+The answer to M(3,9) = 9.  Using the algorithm from step 9 we would get jobs [1, 2, 3]\\\\
 d) The algorithm must iterate over $nxD$ cells. Prior to that it must iterate over the $t$ array of length $n$ to sum the times and over the $d$ array of length $n$ to adjust the deadline times.  However the runtime is dominated by filling out the table which is $O(nxD)$.  We can write D in terms of $n$ if we assume all the times in $t$ are in the range [1,n]. In this case the sum D is an arithmetic series bounded by $n^2$.  Therefore the runtime of the algorithm is $O(n^3)$
 \section*{Problem 2}
 a) Let $s(m,n)$ be a function that returns true or false depending on whether $Z_{m+n}$ is a shuffle of $X = x_1 ... x_m$ and $Y = y_1 ... y_n$.  Let $k=m+n$
@@ -53,6 +60,11 @@ b) The algorithm to fill the table is the following
 c) With X = my, Y = dog and Z = domyg. We have m=2 and n=3.  Our table will be 3x4.\\
 Row 0 will be \{true, true, true, false\}\\
 Row 1 will be \{false, false, true, true\}\\
+Row 2 will be \{false, false, true, true\}\\\\
+The answer will be the bottom right entry of the table\\\\
+With X = my, Y = dog and Z = dmogy we have the same dimensions as above.\\
+Row 0 will be \{true, true, false, true\}\\
+Row 1 will be \{false, true, true, true\}\\
 Row 2 will be \{false, false, true, true\}\\\\
 The answer will be the bottom right entry of the table\\\\
 d) Filling the table is the dominant term in the runtime of the algorithm.  There are (m+1)x(n+1) cells, so the runtime is $O(mn)$.\\

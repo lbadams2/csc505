@@ -85,10 +85,21 @@ dp-max-profit(p, t, d)
     for j = 0 to D
         m[0, j] = 0
 
+    for j = 1 to D
+        for i = 1 to n
+            if d[i] <= j and p[i] > m[1][j] and t[i] <= j
+                m[1][j] = p[i]
+
+    for j = 1 to D
+        for i = 1 to n
+            if t[i-1] + t[i] < d[j]
+                
+
+
     for i = 1 to n
         for j = 1 to D
             if j >= t_i
-                q = m[i-1, j-t_i] + p_i
+                q = max(m[i-1, j], m[i-1, j-t_i] + p_i)
                 if q > m[i, j]
                     m[i, j] = q
     
