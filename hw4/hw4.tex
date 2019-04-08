@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage{titlesec}
+%\newcommand{\sectionbreak}{\clearpage}
+
+\title{CSC505 HW4}
+\author{Liam Adams}
+\date{April 14 2019}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 1}
+\textbf{link}(x,y)\\
+\-\hspace{.5cm}if x.rank $>$ y.rank\\
+\-\hspace{1cm}if y.sub\\
+\-\hspace{1.5cm}x.sub = y.sub // x has pointer to bottom of y\\
+\-\hspace{1cm}else\\
+\-\hspace{1.5cm}x.sub = y // y is has only 1 node\\
+\-\hspace{1cm}y.sub = x.sub // y has pointer to its sibling\\
+\-\hspace{1cm}y.p = x\\
+\-\hspace{.5cm}else\\
+\-\hspace{1cm}if x.sub\\
+\-\hspace{1.5cm}y.sub = x.sub\\
+\-\hspace{1cm}else\\
+\-\hspace{1.5cm}y.sub = x\\
+\-\hspace{1cm}x.sub = y.sub\\
+\-\hspace{1cm}x.p = y\\
+\-\hspace{1cm}x.rank = y.rank\\
+\-\hspace{1.5cm}y.rank = y.rank + 1\\\\
+\textbf{print-set}(x)\\
+\-\hspace{.5cm}if x.sub\\
+\-\hspace{1cm}tmp = x.sub\\
+\-\hspace{1cm}x.sub = null // prevent cycle\\
+\-\hspace{1cm}if x.p.sub == null // will not visit current node again\\
+\-\hspace{1.5cm}print x\\
+\-\hspace{1cm}print-set(tmp)\\
+\-\hspace{.5cm}else\\
+\-\hspace{1cm}print x\\
+\-\hspace{1cm}print-set(x.p)\\\\
+I added a new attribute called sub which is intended to connect the root of subtree x to the bottom of subtree y and vice versa when a \textit{Union} and \textit{link} is performed. If subtree x has a higher rank than subtree y then subtree x will get a pointer to the bottom of y, y.sub, and that pointer can be recursively followed in \textit{print-set} to the bottom of the tree.  Also, y.sub will be made to point to its new sibling in x so all subtrees will be visited.\\
+In \textit{print-set} it is possible for a node to be visited twice if \textit{print-set} is called recursively on its sub member, so I set its sub to null after the node is visited and print only if I detect that it is not part of a cycle.
+\end{document}
