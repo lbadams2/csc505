@@ -2,6 +2,8 @@
 \usepackage{amsmath}
 \usepackage[utf8]{inputenc}
 \usepackage{titlesec}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
 %\newcommand{\sectionbreak}{\clearpage}
 
 \title{CSC505 HW4}
@@ -42,4 +44,62 @@
 \-\hspace{1cm}print-set(x.p)\\\\
 I added a new attribute called sub which is intended to connect the root of subtree x to the bottom of subtree y and vice versa when a \textit{Union} and \textit{link} is performed. If subtree x has a higher rank than subtree y then subtree x will get a pointer to the bottom of y, y.sub, and that pointer can be recursively followed in \textit{print-set} to the bottom of the tree.  Also, y.sub will be made to point to its new sibling in x so all subtrees will be visited.\\
 In \textit{print-set} it is possible for a node to be visited twice if \textit{print-set} is called recursively on its sub member, so I set its sub to null after the node is visited and print only if I detect that it is not part of a cycle.
+\section*{Problem 2}
+a) A minimum spanning tree is formed by connecting separate components using the minimum available edge until a spanning tree is formed.  The algorithm is greedy, so at every step the smallest available edge is chosen.  This guarantees that a MST will also be a bottleneck tree because there is no scenario in which a larger edge will be chosen in order to make a globally optimal solution, the smallest edge is always chosen.  Therefore the largest edge in an MST will be the minimum largest weight over all spanning trees.\\\\
+b) \\
+\textbf{bottle\_max\_weight}(G, w, b)\\
+\-\hspace{.5cm}edge\_list = []\\
+\-\hspace{.5cm}b\_count = 0\\
+\-\hspace{.5cm}st\_size = $|G.V|$ - 1\\
+\-\hspace{.5cm}for e in G.E\\
+\-\hspace{1cm}if $w(e) < b$\\
+\-\hspace{1.5cm}edge\_list.add(e)\\
+\-\hspace{1cm}elif $w(e) == b$\\
+\-\hspace{1.5cm}b\_count++\\
+\-\hspace{.5cm}if $edge\_list.size \geq st\_size$\\
+\-\hspace{1cm}return false\\
+\-\hspace{.5cm}elif $edge\_list.size + b\_count \geq st\_size$\\
+\-\hspace{1cm}return true\\
+\-\hspace{.5cm}else\\
+\-\hspace{1cm}return false\\\\
+In this algorithm I iterate through all the edges and count how many have weights less than $b$.  Since a spanning tree has $st\_size = |G.V| - 1$ edges, if the number of edges less than $b$ is equal to or greater than $st\_size$ then $b$ will be greater than the max weight edge of a bottleneck tree.  If the number of edges less than $b$ plus the number of edges with weight = $b$ is less than $st\_size$ then $b$ will be less than the max weight edge of a bottleneck tree.  Otherwise $b$ will be the max weight edge of a bottleneck tree.  The runtime is $O(E)$\\\\\\\\\\
+c) \\
+\textbf{bottle\_span\_tree}(G, w)\\
+\-\hspace{.5cm}b = inf\\
+\-\hspace{.5cm}for e in G.E\\
+\-\hspace{1cm}if $bottle\_max\_weight(G, w, w(e))$ and $w(e) < b$\\
+\-\hspace{1.5cm}b = w(e)\\
+\-\hspace{.5cm}T = MST-Reduce(G, b)\\
+\-\hspace{.5cm}return T\\\\
+The algorithm uses \textit{bottle\_max\_weight} to find $b$, the smallest weight for which a bottleneck tree can be constructed.  It then uses a modified version of \textit{MST-Reduce} that will contract the graph G at each vertex using an edge that is no larger than $b$ while also constructing the spanning tree T. The for loop is actually $O(E^2)$ and \textit{MST-Reduce} is $O(E)$.  Since an MST is a bottleneck tree, a more efficient algorithm to get a bottleneck tree would be Prim's which runs in $O(E + VlgV)$.  I am not sure how to write an algorithm that would run in linear time.
+\section*{Problem 3}
+a) My algorithm makes a modification to the relax subroutine that Dijkstra's algorithm uses.  It starts by using the standard Dijkstra's algorithm and initializing the $d$ attribute on every vertex except vertex $s$, which is set to 0, to infinity.  It also creates an empty set $S$ in which to store the vertices whose shortest paths have been determined already.  It then creates a min priority queue $Q$ on $d$, and while $Q$ is not empty extract the minimum vertex $u$, add it to $S$, and relax each vertex $v$ adjacent to $u$.  The relax function will compare $v.d$ to $u.d + w(u,v)$ and if $u.d + w(u,v)$ is less than $v.d$ it sets $v.d$ to $u.d + w(u,v)$.  I added another condition in the relax function which will set $usp[v]=false$ if $v.d == u.d + w(u,v)$.  I put this in the relax function because a shortest path with the same value as a previously calculated shortest path must come from an adjacent vertex, and the for loop in which relax is called will check the adjacency list of every vertex.\\\\
+b) \\
+\textbf{dijkstra}(G, w, s)\\
+\-\hspace{.5cm}initialize-single-source(G, s)\\
+\-\hspace{.5cm}usp[s] = true\\
+\-\hspace{.5cm}$S=\emptyset$\\
+\-\hspace{.5cm}Q = G.V\\
+\-\hspace{.5cm}while $Q \neq \emptyset$\\
+\-\hspace{1cm}u = extract-min(Q)\\
+\-\hspace{1cm}S = union(S, u)\\
+\-\hspace{1cm}for v in G.adj[u]\\
+\-\hspace{1.5cm}relax(u, v, w)\\\\
+\textbf{relax}(u, v, w)\\
+\-\hspace{.5cm}if $v.d > u.d + w(u, v)$\\
+\-\hspace{1cm}$v.d = u.d + w(u, v)$\\
+\-\hspace{1cm}$v.\pi = u$\\
+\-\hspace{1cm}usp[v] = true\\
+\-\hspace{.5cm}elif $v.d == u.d + w(u, v)$\\
+\-\hspace{1cm}usp[v] = false\\\\
+c) Figure 1 at the top of the next page shows a graph displaying an example of the algorithm.  Vertex $t$ has its label changed from $true$ to $false$, and vertex $x$ has its label changed from $true$ to $false$ and back to $true$.  The first call to $relax$ is on $s.adj$ which sets $usp[t]=true$ and $usp[y]=true$.  Then $y$ is extracted setting $usp[z]=true$ and $usp[x]=true$, and $usp[t]$ is set to $false$ because $t.d==y.d+w(y,t)$.  Then lets say $t$ is extracted(either $t$ or $z$ could be extracted) which leaves $y$ unchanged, but $x.d==t.d+w(t,x)$ so $usp[x]=false$.  Then $z$ will be extracted leaving $y$ unchanged, but the path from $z$ to $x$ is less than $x.d=4$, so $usp[x]=true$.  Finally $x$ is extracted, and it cannot relax any edges to its neighbors.\\\\
+d) To prove that the algorithm finds the shortest paths to each vertex from $s$, we will use the loop invariant - "At the start of each iteration of the while loop, $v.d = \delta(s,v)$ for each vertex $v \epsilon S$"\\
+To prove by contradiction, let $u$ be the first vertex for which $u.d \neq \delta(s,u)$ when it is added to $S$. $u \neq s$ because $s.d=0$, which also means $S \neq \emptyset$ before $u$ is added to $S$. There must be a path to $u$, otherwise $\delta(s,u)=\infty$ and there would be no shortest path. Because there is at least one path, there is a shortest path. Prior to adding $u$ to $S$, path $p$ connects a vertex in $S$ ($s$) to a vertex in $V-S$ ($u$). Let $y$ be the first vertex along $p$ such that $y \epsilon V-S$ and let $x \epsilon S$ be $y$'s predecessor along $p$. Therefore $y.d=\delta(s,y)$ when $u$ is added to $S$ because $x \epsilon S$ and because $u$ is the first vertex for which $u.d \neq \delta(s,u)$ when it is added to $S$, $x.d=\delta(s,x)$ when it was added to $S$. Edge (x,y) was relaxed at that time, so $y.d=\delta(s,y)$ by the Convergence property. Because $y$ appears before $u$ on a shortest path from $s$ to $u$ we have $\delta(s,y) \leq \delta(s,u)$ which implies $y.d \leq u.d$. But because $u$ and $y$ were in $V-S$ when $u$ was extracted from the min priority queue, $u.d \leq y.d$, which makes the preceding 2 inequalities into equalities, so $y.d = \delta(s,y) = \delta(s,u) = u.d$, so $u.d=\delta(s,u)$, which contradicts the choice of $u$.\\
+Now to prove that the modification to $relax$ identifies whether each vertex has a unique shortest path lets consider a vertex $v$. By the convergence property if $v.d$ is set to $u.d + w(u,v)$, then $v.d$ is now $\delta(s,v)$ and at that moment we have a unique shortest path. Now if a later vertex adjacent to $v$ relaxes $v$ again, we have found a smaller shortest path that is unique.  If some other vertex adjacent to $v$ has a path equal to the prior shortest path, we will set $usp[v]=false$.  Every vertex's adjacency list is scanned only once so we will not incorrectly set $usp[v]=false$.\\
+The time bound will be exactly the same as the time bound for the original Dijkstra algorithm because my modifications take constant time. The time bound depends on the priority queue operations - Insert and Extract-Min are called exactly once per vertex, and each adjacency list is scanned exactly once which means Decrease-Key is called |E| times. If the priority queue is implemented with a Fibonacci heap, the time bound is $O(VlgV + E)$.
+\begin{figure}
+\centering
+\includegraphics[width=65mm]{images/hw4_graph.png}
+\caption{}
+\end{figure}
 \end{document}
