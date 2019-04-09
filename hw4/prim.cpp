@@ -4,66 +4,31 @@
 
 using namespace std;
 
-class Vertex {
-    public:
-        Vertex(int key) : key(key), inTree(false) {}
-        Vertex() {}
-        const int getKey() const {return key;}
-        const bool isInTree() const {return inTree;}
-        bool operator<(const Vertex& rhs) const {
-            return key < rhs.getKey();
-        }
-        bool operator==(const Vertex& rhs) const {
-            return key == rhs.getKey();
-        }
-    private:
-        int key;
-        bool inTree;
-};
-
-namespace std {
-    template <>
-    struct hash<Vertex> {
-        size_t operator()(const Vertex& v) const {
-            return hash<int>()(v.getKey());
-        }
-    };
-}
-
-class Edge {
-    public:
-        Edge(Vertex& l, Vertex& r, int weight) : l(l), r(r), weight(weight) {}
-        const Vertex& getLeftVertex() const {return l;}
-        const Vertex& getRightVertex() const {return r;}
-        const int getWeight() const {return weight;}
-    private:
-        Vertex& l;
-        Vertex& r;
-        int weight;
-};
-
 int num_vertices = 0, num_edges = 0;
-unordered_map<Vertex, vector<Edge> > adj_list;
+vector<bool> in_tree;
+unordered_map<int, vector<int> > adj_list;
+unordered_map<int, unordered_map<int, int> > weight_map; 
 
-Vertex init_map(int key) {
-    Vertex tmp = Vertex(key);
-    unordered_map<Vertex, vector<Edge> >::iterator it = adj_list.find(tmp);
+void init_map(int vertex_index) {
+    unordered_map<int, vector<int> >::iterator it = adj_list.find(vertex_index);
     if(it == adj_list.end()) {
-        vector<Edge> edge_list = vector<Edge>();
-        adj_list[tmp] = edge_list;
-        return tmp;
-    } else
-        return (*it).first;
+        vector<int> edge_list = vector<int>();
+        adj_list[vertex_index] = edge_list;
+        weight_map[vertex_index] = unordered_map<int, int>();
+    }
 }
 
 void read_input() {
     int tmp = 0, i = 0;
     bool firstLine = true;
-    Vertex r, l;
+    int l, r;
     while(scanf("%d", &tmp) != -1) {
         if(firstLine) {
             if(i == 0) {
                 num_vertices = tmp;
+                in_tree = vector<bool>(tmp);
+                adj_list.reserve(tmp);
+                weight_map.reserve(tmp);
                 i++;
             } else {
                 num_edges = tmp;
@@ -73,24 +38,51 @@ void read_input() {
             continue;
         }
         if(i == 0) {
-            l = init_map(tmp);
+            l = tmp;
+            init_map(tmp);
             i++;
         } else if(i == 1) {
-            r = init_map(tmp);
+            r = tmp;
+            init_map(tmp);
             i++;
         } else if(i == 2) {
-            Edge e = Edge(l, r, tmp);
-            adj_list[l].push_back(e);
-            adj_list[r].push_back(e);
+            adj_list[l].push_back(r);
+            weight_map[l][r] = tmp;
+            adj_list[r].push_back(l);
+            weight_map[r][l] = tmp;
             i = 0;
         } else 
             throw invalid_argument("i out of range");
-        
     }
 }
 
-
+void build_component(int vertex, vector<int>& component_vertices) {
+    for(int v : adj_list[vertex]) {
+        if(!in_tree[v]) {
+            component_vertices.push_back(v);
+            in_tree[v] = true;
+            build_component(v, component_vertices);
+        }
+    }
+}
 
 int main(int argc, char** argv) {
-
+    read_input();
+    vector<vector<int> > components;
+    for(int i = 0; i < num_vertices; i++) {
+        if(!in_tree[i]) {
+            vector<int> component = vector<int>();
+            build_component(i, component);
+            components.push_back(component);
+            in_tree[i] = true;
+        }
+    }
+    double ratio = (double)num_edges / (double)num_vertices;
+    int bf = 1;
+    while(bf < ratio) {
+            bf = bf << 1;
+    }
+    if(bf < 2)
+        bf = 2;
+    cout << bf << " " << components.size() << "\n";
 }
