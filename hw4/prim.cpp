@@ -13,11 +13,12 @@ unordered_map<int, unordered_map<int, int> > weight_map;
 class MinHeap {
     public:
         MinHeap(int size, int branch_factor) {
-            this->capacity = size;
-            this->heap_array = vector<pair<int, int> >(size);
+            capacity = size;
+            heap_array.reserve(size);// = vector<pair<int, int> >(size);
             this->branch_factor = branch_factor;
-            this->heap_size = 0;
-            this->vertex_location = vector<int>(size);
+            heap_size = 0;
+            vertex_location.reserve(num_vertices);// = vector<int>(size);
+            lg_branches = 0;
             int tmp = branch_factor;
             while(tmp >>= 1 != 0)
                 lg_branches++;
@@ -25,7 +26,7 @@ class MinHeap {
         
         int getSize() {return heap_size;}
         int firstChild(int i){return (i << lg_branches) + 1;}
-        int lastChild(int i){return this->firstChild(i) + (branch_factor - 1);}
+        int lastChild(int i){return firstChild(i) + (branch_factor - 1);}
         int parent(int i) {
             if(i == 0)
                 return 0;
@@ -35,8 +36,8 @@ class MinHeap {
 
         void swapVertices(int i1, int i2) {
             swap(heap_array[i1], heap_array[i2]);
-            vertex_location[heap_array[i2].second] = i1;
-            vertex_location[heap_array[i1].second] = i2;
+            vertex_location[heap_array[i2].second] = i2;
+            vertex_location[heap_array[i1].second] = i1;
         }
         
         void insertKey(int key, int vertex) {
@@ -44,23 +45,23 @@ class MinHeap {
             heap_size++;            
             int i = heap_size - 1;
             vertex_location[vertex] = i;
-            while(i != 0 && heap_array[this->parent(i)].first > heap_array[i].first) {
-                int parent_index = this->parent(i);
-                this->swapVertices(i, parent_index);
+            while(i != 0 && heap_array[parent(i)].first > heap_array[i].first) {
+                int parent_index = parent(i);
+                swapVertices(i, parent_index);
                 i = parent_index;
             }
         }
 
         void minHeapify(int i) {
-            int firstChild = this->firstChild(i);
-            int lastChild = this->lastChild(i);
+            int first_child = firstChild(i);
+            int last_child = lastChild(i);
             int smallest = i;
 
-            for(int j = firstChild; j <= lastChild; j++)
+            for(int j = first_child; j <= last_child; j++)
                 if(j < heap_size && heap_array[j].first < heap_array[smallest].first)
                     smallest = j;
             if(smallest != i) {
-                this->swapVertices(smallest, i);
+                swapVertices(smallest, i);
                 minHeapify(smallest);
             }
         }
@@ -73,18 +74,18 @@ class MinHeap {
                 return heap_array[0];
             }
             pair<int, int> min = heap_array[0];
-            heap_array[0] = heap_array[heap_size-1];
+            swapVertices(0, heap_size-1);
             heap_size--;
-            this->minHeapify(0);
+            minHeapify(0);
             return min;
         }
 
         void decreaseKey(int vertex, int weight) {
             int heap_index = vertex_location[vertex];
             heap_array[heap_index].first = weight;
-            while(heap_index != 0 && heap_array[this->parent(heap_index)].first > heap_array[heap_index].first) {
-                int parent_index = this->parent(heap_index);
-                this->swapVertices(heap_index, parent_index);
+            while(heap_index != 0 && heap_array[parent(heap_index)].first > heap_array[heap_index].first) {
+                int parent_index = parent(heap_index);
+                swapVertices(heap_index, parent_index);
                 heap_index = parent_index;
             }
         }
@@ -168,7 +169,7 @@ void build_component(int vertex, vector<int>& component_vertices) {
     }
 }
 
-int prim(vector<int> vertices, int bf) {
+int prim(vector<int>& vertices, int bf) {
     MinHeap heap = MinHeap(vertices.size(), bf);
     int total_weight = 0;
     int first = true;
