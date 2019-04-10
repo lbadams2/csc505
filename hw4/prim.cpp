@@ -40,7 +40,7 @@ class MinHeap {
         }
         
         void insertKey(int key, int vertex) {
-            heap_array.push_back(pair<int, int>(key, vertex));
+            heap_array[heap_size] = pair<int, int>(key, vertex);
             heap_size++;            
             int i = heap_size - 1;
             vertex_location[vertex] = i;
